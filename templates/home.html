@@ -2,103 +2,183 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Student Score Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Score Predictor | Dark Edition</title>
 
   <style>
+    :root {
+      --bg-dark: #0f172a; /* Deep Navy Black */
+      --card-bg: #1e293b; /* Slate Blue-Grey */
+      --primary-accent: #818cf8; /* Soft Indigo */
+      --secondary-accent: #34d399; /* Emerald Green */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: #334155;
+    }
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #4e73df, #1cc88a);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
+      color: var(--text-main);
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 30px 40px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      max-width: 850px;
+      width: 92%;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 45px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      margin: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
     }
 
     h1 {
-      text-align: center;
-      color: #2f2f2f;
-      margin-bottom: 20px;
+      font-size: 2.4rem;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 0 10px 0;
+      font-weight: 800;
     }
 
     .subtitle {
-      text-align: center;
-      color: #777;
-      margin-bottom: 30px;
-    }
-
-    label {
-      font-weight: bold;
-      color: #333;
+      color: var(--text-muted);
+      font-size: 1.05rem;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 30px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
     }
 
-    input[type="text"],
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: var(--primary-accent);
+      margin-bottom: 10px;
+      margin-left: 2px;
+    }
+
     input[type="number"],
     select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 15px;
+      background-color: var(--input-bg);
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+      color: white;
+      transition: all 0.25s ease;
     }
 
-    .submit {
+    /* Target dropdown arrow color in some browsers */
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.2em;
+      appearance: none;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      background-color: #3d4b5f;
+      box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2);
+    }
+
+    .submit-container {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 45px;
     }
 
     button {
-      padding: 12px 30px;
-      background: linear-gradient(135deg, #1cc88a, #17a673);
+      padding: 18px 50px;
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
       color: white;
-      font-size: 17px;
+      font-size: 18px;
+      font-weight: 700;
       border: none;
-      border-radius: 30px;
+      border-radius: 18px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
     }
 
     button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 20px 30px -10px rgba(168, 85, 247, 0.6);
     }
 
     .result-box {
-      margin-top: 35px;
-      padding: 22px;
-      background: #f1f6ff;
-      border-left: 6px solid #4e73df;
-      border-radius: 15px;
-      font-size: 18px;
+      margin-top: 45px;
+      padding: 30px;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid var(--secondary-accent);
+      border-radius: 24px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-out;
     }
 
+    .result-title {
+      font-size: 1rem;
+      color: var(--secondary-accent);
+      margin-bottom: 10px;
+      display: block;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .result-value {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #fff;
+      display: block;
+      text-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Scrollbar Styling for Dark Mode */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--input-bg); border-radius: 10px; }
   </style>
 </head>
 
 <body>
   <div class="container">
-    
-    <h1>Student Math Score Predictor</h1>
-    <div class="subtitle">
-      Enter the student details below — your ML model will do the rest ✨
-    </div>
+    <header>
+      <h1>Score Analysis Engine</h1>
+      <p class="subtitle">Predicting student success through machine learning</p>
+    </header>
 
     <form method="POST" action="/prediction">
-
       <div class="form-grid">
-
-        <div>
+        
+        <div class="input-group">
           <label>Gender</label>
           <select name="gender">
             <option value="male">Male</option>
@@ -106,7 +186,7 @@
           </select>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Race / Ethnicity</label>
           <select name="ethnicity">
             <option value="group A">Group A</option>
@@ -117,7 +197,7 @@
           </select>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Parental Education</label>
           <select name="parental_level_of_education">
             <option value="some high school">Some High School</option>
@@ -128,7 +208,7 @@
           </select>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Lunch Type</label>
           <select name="lunch">
             <option value="standard">Standard</option>
@@ -136,7 +216,7 @@
           </select>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Test Preparation</label>
           <select name="test_preparation_course">
             <option value="none">None</option>
@@ -144,28 +224,27 @@
           </select>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Reading Score</label>
-          <input type="number" name="reading_score" placeholder="0 - 100" required>
+          <input type="number" name="reading_score" placeholder="0 - 100" min="0" max="100" required>
         </div>
 
-        <div>
+        <div class="input-group">
           <label>Writing Score</label>
-          <input type="number" name="writing_score" placeholder="0 - 100" required>
+          <input type="number" name="writing_score" placeholder="0 - 100" min="0" max="100" required>
         </div>
 
       </div>
 
-      <div class="submit">
-        <button type="submit">Predict Math Score</button>
+      <div class="submit-container">
+        <button type="submit">Run Prediction Model</button>
       </div>
     </form>
 
-
     {% if result is not none %}
       <div class="result-box">
-        🎯 <strong>Predicted Math Score:</strong>
-        <span style="color:#4e73df;">{{ result }}</span>
+        <span class="result-title">Predicted Math Score</span>
+        <span class="result-value">{{ result }}</span>
       </div>
     {% endif %}
 
