@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder , StandardScaler
+from sklearn.preprocessing import OneHotEncoder , StandardScaler ,FunctionTransformer
 
 from src.exception import CustomException
 from src.logger import logging
@@ -30,10 +30,22 @@ class DataTransformation:
                             'test_preparation_course']
             num_feature = ['reading_score', 'writing_score']
 
+            def total_score_df(x):
+                total = x[:,0] + x[:,1]
+
+                total = total.reshape(-1,1)
+
+                #append total to x
+
+                return np.hstack([x,total])
+            
+            add_total = FunctionTransformer(total_score_df,validate=False)
+
 
             num_pipline = Pipeline(
                 steps=[
                 ("Imputer",SimpleImputer(strategy='median')),
+                ("Add Total",add_total),
                 ("StandardSclaer",StandardScaler())
                 ]
             )

@@ -7,6 +7,10 @@ from src.logger import logging
 from src.exception import CustomException
 import dill
 from sklearn.metrics import r2_score
+from sklearn.model_selection import RandomizedSearchCV
+
+
+
 def save_obj(file_path,obj):
     try:
         dir_path = os.path.dirname(file_path)
@@ -19,13 +23,20 @@ def save_obj(file_path,obj):
         logging.info("Exception is happen in save_obj")
         raise CustomException(e,sys)
     
-def evalute_models(x_train,y_train,x_test,y_test,models):
+def evalute_models(x_train,y_train,x_test,y_test,models,params,cv=4,n_jobs=3):
     try : 
         report = {}
 
         for name,model in models.items():
             print(f"Model : {name}")
+            param = params.get(name, None)
+
+            if param:
+                rs = RandomizedSearchCV(model,param_distributions=param,cv=cv,n_jobs=n_jobs)
+                rs.fit(x_train,y_train)
+                model.set_params(**rs.best_params_)
             model.fit(x_train,y_train)
+            
 
             y_train_pred = model.predict(x_train)
 
@@ -41,3 +52,12 @@ def evalute_models(x_train,y_train,x_test,y_test,models):
 
     except Exception as e:
         raise CustomException(e,sys)
+    
+
+def load_object(file_path):
+    try : 
+        with open(file_path,'rb') as file_obj:
+            return dill.load(file_obj)
+    except Exception as e:
+        raise CustomException(e,sys)
+    

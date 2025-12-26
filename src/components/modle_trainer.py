@@ -39,12 +39,60 @@ class ModelTrainer:
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree" : DecisionTreeRegressor(),
                 "Gradient Boosting" : GradientBoostingRegressor(),
-                "linear Regressor " :LinearRegression(),
-                "K-Neighbours Regressor" : KNeighborsRegressor(),
+                "KNeighborsRegressor" : KNeighborsRegressor(),
                 "XGB Regressor" : XGBRegressor(),
-                "Adaboost Regressor ": AdaBoostRegressor()
+                "Adaboost Regressor ": AdaBoostRegressor(),
+                "linear Regressor " :LinearRegression()
             }
-            model_report:dict = evalute_models(x_train,y_train,x_test,y_test,models)
+            params = {
+                "Random Forest" : {
+                    "n_estimators": [100, 200, 300, 500],
+                    "max_depth": [None, 5, 10, 20, 30],
+                    "min_samples_split": [2, 5, 10],
+                    "min_samples_leaf": [1, 2, 4],
+                    "max_features": [None, "sqrt", "log2"]
+                },
+                "Decision Tree" : {
+                    "criterion": ["squared_error", "friedman_mse", "absolute_error"],
+                    "splitter": ["best", "random"],
+                    "max_depth": [None, 5, 10, 20, 30],
+                    "min_samples_split": [2, 5, 10],
+                    "min_samples_leaf": [1, 2, 5],
+                    "max_features": [None, "sqrt", "log2"]
+                },
+                "Gradient Boosting" : {
+                    "n_estimators": [100, 200, 300],
+                    "learning_rate": [0.01, 0.05, 0.1, 0.2],
+                    "subsample": [0.6, 0.8, 1.0],
+                    "max_depth": [3, 4, 5],
+                    "min_samples_split": [2, 5, 10],
+                    "min_samples_leaf": [1, 2, 4],
+                    "max_features": ["sqrt", "log2"]
+                },
+                "K-Neighbours Regressor" : {
+                    "n_neighbors": [3, 5, 7, 9, 11],
+                    "weights": ["uniform", "distance"],
+                    "metric": ["euclidean", "manhattan", "minkowski"],
+                    "p": [1, 2]   
+                },
+                "XGB Regressor" : {
+                    "n_estimators": [200, 400, 600],
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "max_depth": [3, 5, 7, 9],
+                    "subsample": [0.6, 0.8, 1.0],
+                    "colsample_bytree": [0.6, 0.8, 1.0],
+                    "reg_alpha": [0, 0.01, 0.1],
+                    "reg_lambda": [0.5, 1, 2]
+                },
+                "Adaboost Regressor " : {
+                    "n_estimators": [50, 100, 200, 400],
+                    "learning_rate": [0.01, 0.05, 0.1, 0.5, 1.0],
+                    "loss": ["linear", "square", "exponential"]
+                }
+
+                
+            }
+            model_report:dict = evalute_models(x_train,y_train,x_test,y_test,models,params)
 
             # To get best model score from dict
             best_model_score = max(sorted(model_report.values()))
@@ -69,7 +117,7 @@ class ModelTrainer:
 
             return r2_square
         
-        
+
         except Exception as e:
             raise CustomException(e,sys)
 

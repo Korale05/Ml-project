@@ -3,6 +3,6 @@ numpy
 seaborn
 scikit-learn
 xgboost
-catboost
-tensorflow
 dill
+flask
+streamlit
